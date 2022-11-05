@@ -1,0 +1,30 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+.pv_views {
+    font-size: 24px;
+    margin: 5px 0;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+.pv_wrapper code{
+    background: #ddd;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+.visitCount {
+    color: #0693e3;
+}
+.pv_timer {
+    font-size: 23px;
+    margin-bottom: 5px;
+    color: #f7948f;
+}
+button.pv_nextpage {
+    all: unset;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 18px;
+}
