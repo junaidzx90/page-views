@@ -108,6 +108,8 @@ class Page_Views_Admin {
 
 	function admin_menu_page(){
 		add_menu_page( "Page views", "Page views", "manage_options", "page-views", [$this, "page_views_menu_page"], "dashicons-visibility", 45 );
+		add_submenu_page("page-views", "Settings", "Settings", "manage_options", "vt-settings",[$this, "pv_settings"], null );
+
 		add_settings_section( 'page_views_setting_section', '', '', 'page_views_setting_page' );
 		// Waiting time in seconds
 		add_settings_field( 'pv_waiting_time', 'Waiting time in milliseconds ', [$this, 'pv_waiting_time_cb'], 'page_views_setting_page','page_views_setting_section' );
@@ -118,7 +120,7 @@ class Page_Views_Admin {
 	}
 
 	function pv_waiting_time_cb(){
-		echo '<input min="0" type="number" name="pv_waiting_time" value="'.get_option('pv_waiting_time').'" placeholder="5000">';
+		echo '<input min="0" type="number" name="pv_waiting_time" value="'.get_option('pv_waiting_time').'" placeholder="500">';
 	}
 
 	function pv_visitable_pages_cb(){
@@ -145,7 +147,7 @@ class Page_Views_Admin {
 		die;
 	}
 
-	function page_views_menu_page(){
+	function pv_settings(){
 		?>
 		<h3>Settings</h3>
 		<hr>
@@ -160,6 +162,10 @@ class Page_Views_Admin {
             </form>
         </div>
 		<?php
+	}
+
+	function page_views_menu_page(){
+		require_once plugin_dir_path(__FILE__ )."partials/page-views-admin-display.php";
 	}
 
 	function get_page_views_search_val(){

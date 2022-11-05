@@ -99,7 +99,7 @@ class Page_Views_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/page-views-public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'pv_ajax', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
-			'timer' => get_option('pv_waiting_time')
+			'timer' => ((get_option('pv_waiting_time'))?get_option('pv_waiting_time'): 500)
 		) );
 	}
 
@@ -156,6 +156,8 @@ class Page_Views_Public {
 
 	function posts_the_content($the_content){
 		global $post;
+		$pvWrapper = '';
+		
 		if($post->post_type === 'post'){
 			$pages = get_option( 'pv_visitable_pages' );
 			$pages = explode(",", $pages);
@@ -200,7 +202,7 @@ class Page_Views_Public {
 				}
 				$counts = sizeof($counts);
 				
-				$pvWrapper = '<div class="pv_wrapper">';
+				$pvWrapper .= '<div class="pv_wrapper">';
 				$pvWrapper .= '<div class="pv_views">';
 				$pvWrapper .= '<strong>You visited: <span class="visitCount">'.$counts.'</span> '.(($counts > 1)? 'pages': 'page').'</strong>';
 				$pvWrapper .= '</div>';
@@ -213,7 +215,18 @@ class Page_Views_Public {
 					if(isset($_COOKIE['pv_rand_str'])){
 						$code = base64_decode($_COOKIE['pv_rand_str']);
 					}
-					$pvWrapper .= "<strong>Here is your code:</strong> <code>$code</code>";
+
+					$tomorrow = strtotime("tomorrow");
+					$visits_results = get_option("pv_results_$tomorrow");
+					if(!is_array($visits_results)){
+						$visits_results = [];
+					}
+
+					$visits_results[] = $code;
+					
+					update_option("pv_results_$tomorrow", $visits_results);
+
+					$pvWrapper .= "<strong>Here is your code:</strong> <code>".strtolower($code)."</code>";
 				}
 
 				$pvWrapper .= '</div>';

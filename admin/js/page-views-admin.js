@@ -54,4 +54,11 @@ jQuery(function( $ ) {
 		}
 	});
 
+	$('#pv_filter').keyup(function(){
+		var value = $(this).val().toLowerCase();
+		$('.pv_code').filter(function(){
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+		});
+	});
+
 });
